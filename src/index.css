@@ -235,6 +235,12 @@ a:focus-visible {
   padding: 0;
   cursor: var(--cursor);
   transform: translate(-50%, -62%);
+  pointer-events: none;
+}
+
+.island .sign,
+.island .island-art {
+  pointer-events: auto;
 }
 
 .world-root,
@@ -465,6 +471,7 @@ a:focus-visible {
   position: absolute;
   top: 36px;
   right: 42px;
+  z-index: 6;
   width: 232px;
   padding: 12px 12px 10px;
   background: rgba(16, 28, 44, 0.88);
