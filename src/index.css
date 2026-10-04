@@ -46,6 +46,15 @@ body {
   overflow: hidden;
 }
 
+body:has(.viewport[data-layout="tablet"]),
+body:has(.viewport[data-layout="phone"]) {
+  overflow: auto;
+}
+
+body:has(.viewport[data-open="true"]) {
+  overflow: hidden;
+}
+
 button,
 a {
   font: inherit;
@@ -1515,9 +1524,13 @@ a:focus-visible {
 
 .viewport[data-time="day"] .identity h1,
 .viewport[data-time="day"] .identity .role,
+.viewport[data-time="day"] .compact-identity h1,
+.viewport[data-time="day"] .compact-identity .role,
 .viewport[data-time="day"] .map-label,
 .viewport[data-time="evening"] .identity h1,
 .viewport[data-time="evening"] .identity .role,
+.viewport[data-time="evening"] .compact-identity h1,
+.viewport[data-time="evening"] .compact-identity .role,
 .viewport[data-time="evening"] .map-label {
   color: #142033;
 }
@@ -1529,8 +1542,12 @@ a:focus-visible {
 
 .viewport[data-time="day"] .stack-line,
 .viewport[data-time="day"] .intro-copy,
+.viewport[data-time="day"] .compact-identity .stack-line,
+.viewport[data-time="day"] .compact-identity .intro-copy,
 .viewport[data-time="evening"] .stack-line,
-.viewport[data-time="evening"] .intro-copy {
+.viewport[data-time="evening"] .intro-copy,
+.viewport[data-time="evening"] .compact-identity .stack-line,
+.viewport[data-time="evening"] .compact-identity .intro-copy {
   color: #243244;
 }
 
@@ -1591,6 +1608,239 @@ a:focus-visible {
 
 .viewport[data-time="day"] .meteor {
   display: none;
+}
+
+.compact {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: 28px 28px 48px;
+}
+
+.compact-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.compact-top .time-switch {
+  margin-top: 0;
+}
+
+.compact .map-label {
+  position: static;
+}
+
+.compact-identity {
+  position: relative;
+  max-width: 640px;
+}
+
+.compact-identity h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 0.95;
+  color: #f7f1e4;
+}
+
+.compact .paper-note {
+  position: relative;
+  left: auto;
+  top: auto;
+  display: inline-block;
+  margin: 0 0 16px;
+}
+
+.compact-identity .role,
+.compact-identity .stack-line,
+.compact-identity .intro-copy {
+  margin-top: 10px;
+}
+
+.compact-identity .intro-copy {
+  max-width: 42ch;
+}
+
+.compact-identity .px-btn {
+  margin-top: 18px;
+}
+
+.compact-places {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 18px;
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.place-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 8px 8px 12px;
+}
+
+.place-art {
+  display: block;
+  transform: translateY(0);
+  transition: transform 220ms ease;
+}
+
+.place-card:hover .place-art,
+.place-card:focus-visible .place-art {
+  transform: translateY(-6px);
+}
+
+.place-card .sign {
+  margin: 0;
+}
+
+.compact-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.compact-hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.compact-cat {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.compact-status {
+  width: min(260px, 100%);
+  padding: 12px;
+  background: rgba(16, 28, 44, 0.88);
+  border: 2px solid #31465f;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.compact-status p {
+  margin: 0;
+}
+
+.viewport[data-layout="tablet"],
+.viewport[data-layout="phone"] {
+  height: auto;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.viewport[data-layout="tablet"][data-open="true"],
+.viewport[data-layout="phone"][data-open="true"] {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.viewport[data-layout="tablet"] .scene,
+.viewport[data-layout="phone"] .scene {
+  padding: 16px 18px 32px;
+}
+
+.viewport[data-layout="tablet"] .scene-top,
+.viewport[data-layout="phone"] .scene-top {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.viewport[data-layout="tablet"] .scene-grid,
+.viewport[data-layout="phone"] .scene-grid,
+.viewport[data-layout="tablet"] .skill-layout,
+.viewport[data-layout="phone"] .skill-layout {
+  grid-template-columns: 1fr;
+}
+
+.viewport[data-layout="tablet"] .scene-art,
+.viewport[data-layout="phone"] .scene-art {
+  min-height: 220px;
+  max-height: 340px;
+  overflow: hidden;
+}
+
+.viewport[data-layout="tablet"] .metrics,
+.viewport[data-layout="tablet"] .metrics.compact,
+.viewport[data-layout="phone"] .metrics,
+.viewport[data-layout="phone"] .metrics.compact,
+.viewport[data-layout="tablet"] .skill-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.viewport[data-layout="tablet"] .timeline-choices,
+.viewport[data-layout="phone"] .timeline-choices {
+  grid-template-columns: 1fr;
+}
+
+.viewport[data-layout="tablet"] .timeline-row,
+.viewport[data-layout="phone"] .timeline-row {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.viewport[data-layout="phone"] .compact {
+  padding: 18px 16px 36px;
+}
+
+.viewport[data-layout="phone"] .compact-top,
+.viewport[data-layout="phone"] .compact-foot,
+.viewport[data-layout="phone"] .scene-top {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.viewport[data-layout="phone"] .compact-identity h1 {
+  font-size: 40px;
+}
+
+.viewport[data-layout="phone"] .compact-places,
+.viewport[data-layout="phone"] .skill-grid,
+.viewport[data-layout="phone"] .metrics,
+.viewport[data-layout="phone"] .metrics.compact,
+.viewport[data-layout="phone"] .traits {
+  grid-template-columns: 1fr;
+}
+
+.viewport[data-layout="phone"] .scene h1 {
+  font-size: 28px;
+}
+
+.viewport[data-layout="phone"] .back-link {
+  justify-content: center;
+  font-size: 18px;
+}
+
+.viewport[data-layout="phone"] .actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.viewport[data-layout="phone"] .actions .px-btn {
+  width: 100%;
+}
+
+.viewport[data-layout="phone"] .dialog {
+  left: 16px;
+  right: 16px;
+  width: auto;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -7,13 +7,13 @@ import {
   sceneVariantsReduced,
 } from "./animations/variants";
 import { TimeProvider, useTimeOfDay } from "./context/TimeOfDay";
-import { DesktopGate } from "./components/ui/DesktopGate";
 import { DialogBox } from "./components/ui/DialogBox";
 import { LoadingScreen } from "./components/ui/LoadingScreen";
+import { CompactMap } from "./components/world/CompactMap";
 import { WorldMap } from "./components/world/WorldMap";
 import { LOCATIONS, STAGE } from "./data/world";
-import { useDesktopOnly } from "./hooks/useDesktopOnly";
 import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";
+import { useLayoutMode } from "./hooks/useLayoutMode";
 import { useStageScale } from "./hooks/useStageScale";
 import type { LocationId } from "./types/portfolio";
 
@@ -25,7 +25,6 @@ const EducationScene = lazy(() => import("./components/scenes/EducationScene"));
 const ContactScene = lazy(() => import("./components/scenes/ContactScene"));
 
 export default function App() {
-  const desktop = useDesktopOnly(1100);
   const [ready, setReady] = useState(false);
   const reduced = useReducedMotion();
 
@@ -33,8 +32,6 @@ export default function App() {
     const timer = window.setTimeout(() => setReady(true), reduced ? 200 : 780);
     return () => window.clearTimeout(timer);
   }, [reduced]);
-
-  if (!desktop) return <DesktopGate />;
 
   return (
     <>
@@ -50,6 +47,8 @@ export default function App() {
 
 function Portfolio() {
   const { time } = useTimeOfDay();
+  const layout = useLayoutMode();
+  const desktop = layout === "desktop";
   const scale = useStageScale(STAGE.w, STAGE.h);
   const reduced = useReducedMotion();
   const [selected, setSelected] = useState<LocationId | null>(null);
@@ -90,23 +89,32 @@ function Portfolio() {
     : "50% 50%";
 
   return (
-    <main className="viewport" data-time={time}>
+    <main
+      className="viewport"
+      data-time={time}
+      data-layout={layout}
+      data-open={view ? "true" : "false"}
+    >
       <div className="stars" data-depth="2" />
       <div className="stars-b" />
-      <div
-        className="stage-fit"
-        style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
-        inert={view ? true : undefined}
-      >
-        <WorldMap
-          selected={selected}
-          camera={view}
-          hidden={view !== null}
-          onSelect={setSelected}
-          onOpen={open}
-          onCat={() => whisper("Mrrp.")}
-        />
-      </div>
+      {desktop ? (
+        <div
+          className="stage-fit"
+          style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
+          inert={view ? true : undefined}
+        >
+          <WorldMap
+            selected={selected}
+            camera={view}
+            hidden={view !== null}
+            onSelect={setSelected}
+            onOpen={open}
+            onCat={() => whisper("Mrrp.")}
+          />
+        </div>
+      ) : (
+        !view && <CompactMap onOpen={open} onCat={() => whisper("Mrrp.")} />
+      )}
       <AnimatePresence>
         {view && (
           <motion.div
